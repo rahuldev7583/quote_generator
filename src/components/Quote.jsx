@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Bottom from "./Bottom";
+
 function Quote() {
   const [data, setData] = useState({ quote: "", author: "", genre: "" });
   const [fetched, setFetched] = useState(false);
@@ -33,19 +35,23 @@ function Quote() {
     setShowAuthor(true);
     setFetched(true);
   }
+  let line = fetched && data.quote[0].length / 40;
+
   return (
     <div className="">
       <div
-        className="flex absolute top-8 right-10 text-3xl cursor-pointer"
+        className="flex absolute top-8 right-10 text-4xl cursor-pointer"
         onClick={() => fetchQuote("random")}
       >
         <p className="">random</p>
-        <span className="material-symbols-outlined text-3xl">autorenew</span>
+        <span className="material-symbols-outlined text-4xl">autorenew</span>
       </div>
       {!showAuthor ? (
         <div className="absolute top-60 left-28 right-28">
           <div className="flex">
-            <div className="w-4 h-40  bg-amber-200" />
+            <div
+              className={`rounded-xl bg-amber-200 w-[15px] h-[${line * 40}px] `}
+            />
             {<p className="text-4xl ml-10 font-medium">“{data.quote}”</p>}
           </div>
           <div
@@ -56,8 +62,8 @@ function Quote() {
             onMouseOut={() => setHover(false)}
             onClick={() => setfetchAuthor(true)}
           >
-            <p className="text-2xl font-medium ml-12">{data.author}</p>
-            <p className="text-xl mt-4 ml-12">{data.genre}</p>
+            <p className="text-3xl font-medium ml-12">{data.author}</p>
+            <p className="text-2xl mt-4 ml-12">{data.genre}</p>
 
             {hover && (
               <span className="material-symbols-outlined ml-[80%] text-4xl">
@@ -67,19 +73,26 @@ function Quote() {
           </div>
         </div>
       ) : (
-        <div className="absolute top-60 left-28 right-28">
-          <div className="flex">
-            <div className="w-4 h-40  bg-amber-200" />
-
-            {data.quote.map((q) => (
-              <p key={q} className="text-4xl text-red-500 ml-10 font-medium">
-                “{q}”
-              </p>
-            ))}
-            <p className="text-2xl font-medium ml-12">{data.author}</p>
-          </div>
+        <div className="absolute top-40 left-28 right-28">
+          <p className="text-3xl font-medium ml-12">{data.author}</p>
+          {data.quote.map((q) => {
+            return (
+              <div className="flex mt-12 ">
+                <div
+                  className={`rounded-xl bg-amber-200 w-[15px] h-[${
+                    40 * line
+                  }px] `}
+                />
+                <p key={q} className="text-4xl  ml-10 font-medium">
+                  “{q}”
+                </p>
+              </div>
+            );
+          })}
+          <Bottom styled="relative left-40 top-20 " />
         </div>
       )}
+      {!showAuthor && <Bottom styled="absolute left-72 bottom-16 " />}
     </div>
   );
 }

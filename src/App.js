@@ -1,6 +1,9 @@
 import Quote from "./components/Quote";
+
 function App() {
-  return <Quote />;
+  return (
+      <Quote />
+  );
 }
 
 export default App;
